@@ -1,0 +1,39 @@
+
+### 2. Service Worker for Notifications
+
+For push notifications to work when the app is not in the active browser tab, you still need the `firebase-messaging-sw.js` file.
+
+Create a new file named `firebase-messaging-sw.js` in the same folder (`c:\Users\KING\Downloads\Pesalaama\Pesalaama\`) and add this content:
+
+````javascript
+// filepath: c:\Users\KING\Downloads\Pesalaama\Pesalaama\firebase-messaging-sw.js
+// Scripts for firebase and firebase messaging
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
+importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+// Initialize the Firebase app in the service worker
+const firebaseConfig = {
+    apiKey: "AIzaSyCarB8vxcGZL_QTYJOpTzA4WZ1HcxGLqW0",
+    authDomain: "pesalaama-36d3e.firebaseapp.com",
+    databaseURL: "https://pesalaama-36d3e-default-rtdb.firebaseio.com",
+    projectId: "pesalaama-36d3e",
+    storageBucket: "pesalaama-36d3e.appspot.com",
+    messagingSenderId: "1048740892531",
+    appId: "1:1048740892531:web:727e99e53555853fe8ff06"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload);
+  
+  const notificationTitle = payload.notification.title;
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: '/pesalaama logo.png'
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
+});
